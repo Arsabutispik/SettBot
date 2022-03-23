@@ -2,12 +2,21 @@ import { BaseGuildTextChannel, Message, MessageEmbed, User } from "discord.js";
 import { commandBase } from "../types";
 import duelHandler from "../utils/duelHandler.js";
 import { randomRange } from "../utils/utils.js";
+import duelChannels from '../duelChannels.json';
 
 const chance = randomRange(1, 2)
 export default {
     name: "düello",
     category: "Eğlence",
     async execute({message, client, args}) {
+        if(duelChannels.includes(message.channel.id)){
+            message.reply("Lütfen düello kanallarında düello komutunu kullanınız").then(msg => {
+                setTimeout(() => {
+                    msg.delete()
+                }, 1000, 5)
+            })
+            message.delete()
+        }
         if(client.duelChannel.has(message.channel.id)){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
