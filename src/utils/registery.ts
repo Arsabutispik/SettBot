@@ -1,4 +1,4 @@
-
+//Bu dosya aşırı karmaşık burada herhangi bir şeye dokunmanız gerekmeyecek.
 import fs from "fs";
 import path from "path";
 import { SettClient, commandBase } from "../types";
