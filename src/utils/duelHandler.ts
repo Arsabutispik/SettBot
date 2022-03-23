@@ -8,6 +8,7 @@ const duellerInfo: duellerInfo = {
     heal: 5
     
 }
+//Butonlar
 const attackButton = new MessageButton()
 .setCustomId("saldır")
 .setEmoji("⚔️")
@@ -41,6 +42,7 @@ const escapeButton = new MessageButton()
 const actionRow = new MessageActionRow()
 .addComponents(attackButton, defenseButton, healButton, ultiButton, escapeButton)
 
+//Mesajlar
 const attackMessage: Array<{message: string, url: string}> = [
     {
         message: "\`{attacker}\`, Sett'in *Balyoz Gibi* yeteneğini kullanarak \`{defender}\` kişisine \`{damage}\` hasar verdi!",
@@ -81,17 +83,35 @@ const healMessage: Array<{message: string, url: string}> = [
     }
 ]
 
+/**
+ * 
+ * @param message - Girilen Mesaj
+ * @param attacker - Atak Yapan Kişi
+ * @param deffender - Defans Yapan Kişi
+ * @param damage - Hasar
+ * @returns Girilen Mesaj'ı değiştirip geri sunar.
+ */
 function replaceMessage(message: string, attacker: User, deffender: User, damage: number): string {
         return message.replaceAll('{attacker}', attacker.username).replaceAll('{defender}', deffender.username).replaceAll('{damage}', damage.toString())
 }
 
+/**
+ * 
+ * @param client - Bot
+ * @param attacker - Atak Yapan Kişi
+ * @param defender - Defans Yapan Kişi
+ * @param channel - Düello Kanalı
+ * @param amount - Bahis Miktarı
+ * @returns Düello kazananı
+ */
 const duelHandler = async(client: SettClient, attacker: User, defender: User, channel: BaseGuildTextChannel, amount: number): Promise<User | undefined> => {
+    //Düello yapan kişilerin bilgilerini gir
     if(!client.duelInfo.hasAll(attacker.id, defender.id)) {
         client.duelInfo.set(attacker.id, duellerInfo)
         client.duelInfo.set(defender.id, duellerInfo)
     }
     
-
+    //Girilen bilgileri al
     const attackerInfo = client.duelInfo.get(attacker.id)
     const defenderInfo = client.duelInfo.get(defender.id)
 
@@ -102,9 +122,9 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
     .setFooter({text: `Can: ${attackerInfo!.hp} Düşman Canı: ${defenderInfo!.hp}`, iconURL: client.user!.displayAvatarURL()})
     
     const msg = await channel.send({embeds: [embed], components: [actionRow]})
-
+    //Belirli butonu bekleyen filtre
     const filter = (m: MessageComponentInteraction) => m.customId == "saldır" || m.customId == "savun" || m.customId == "can doldur" || m.customId == "kaç" || m.customId == "ulti"
-    
+    //Yanıt bekle cevap gelmezse 5 dakika içinde düelloyu iptal et.
     let response: MessageComponentInteraction;
     try {
         response = (await channel.awaitMessageComponent({filter, time: 300000})) as MessageComponentInteraction
@@ -120,14 +140,17 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
             msg.delete()
             return
     }
+    //Saldırı hasarı ve şans belirle.
     let damage = randomRange(10, 20)
     const chance = randomRange(0, 100)
-
+    //Gelen yanıta göre bir şey yap
     switch (response.customId as "saldır" | "savun" | "can doldur" | "ulti" | "kaç") {
         case "saldır":
             const message = attackMessage[randomRange(0, attackMessage.length - 1)]
+            //Defans yapan kişinin savunması varsa saldırı hasarını azalt
             if(defenderInfo!.defence) {
                 damage = randomRange(5, 15)
+                //Hasar defans yapan kişinin canından fazla ise oyunu bitir.
                 if(defenderInfo!.hp < damage){
                     const embed = new MessageEmbed()
                     .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
@@ -153,12 +176,14 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                 setTimeout(() => {
                     mesg.delete()
                 }, 1000 * 10)
+                //Oyun bitmedi savaşa devam
                 client.duelInfo.delete(defender.id)
                 client.duelInfo.set(defender.id, {hp: defenderInfo!.hp - damage, defence: false, heal: defenderInfo!.heal})
                 msg.delete()
                 duelHandler(client,  defender, attacker, channel, amount)
 
             } else {
+                //Hasar defans yapan kişinin canından fazla ise oyunu bitir.
                 if(defenderInfo!.hp < damage){
                     const embed = new MessageEmbed()
                     .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
@@ -184,7 +209,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                 setTimeout(() => {
                     mesg.delete()
                 }, 1000 * 10)
-
+                //Oyun bitmedi savaşa devam
                 client.duelInfo.delete(defender.id)
                 client.duelInfo.set(defender.id, {hp: defenderInfo!.hp - damage, defence: false, heal: defenderInfo!.heal})
                 msg.delete()
@@ -247,7 +272,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                 const message = ultiMessage[randomRange(0, attackMessage.length - 1)]
                 if(defenderInfo!.defence) {
                     damage = randomRange(15, 35)
-
+                    //Hasar defans yapan kişinin canından fazla ise oyunu bitir.
                     if(defenderInfo!.hp < damage){
                         const embed = new MessageEmbed()
                         .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
@@ -274,13 +299,14 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                     setTimeout(() => {
                         mesg.delete()
                     }, 1000 * 10)
-
+                    //Oyun bitmedi savaşa devam
                     client.duelInfo.delete(defender.id)
                     client.duelInfo.set(defender.id, {hp: defenderInfo!.hp - damage, defence: false, heal: defenderInfo!.heal})
                     msg.delete()
                     duelHandler(client,  defender, attacker, channel, amount)
                 } else {
                     damage = randomRange(20, 45)
+                    //Hasar defans yapan kişinin canından fazla ise oyunu bitir.
                     if(defenderInfo!.hp < damage){
                         const embed = new MessageEmbed()
                         .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
@@ -307,7 +333,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                     setTimeout(() => {
                         mesg.delete()
                     }, 1000 * 10)
-
+                    //Oyun bitmedi savaşa devam
                     client.duelInfo.delete(defender.id)
                     client.duelInfo.set(defender.id, {hp: defenderInfo!.hp - damage, defence: false, heal: defenderInfo!.heal})
                     msg.delete()

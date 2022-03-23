@@ -10,10 +10,15 @@ export default {
     category: "Eğlence",
     async execute({message, client, args}) {
         if(duelChannels.includes(message.channel.id)){
-            message.reply("Lütfen düello kanallarında düello komutunu kullanınız").then(msg => {
+            const embed = new MessageEmbed()
+            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+            .setDescription("Bu kanalda düello yapmak yasaktır. Lütfen şu kanallarda düello yapınız:")
+            .addField("Düello İzni Verilen Kanallar", duelChannels.length > 0 ? duelChannels.map(m => {`<#${m}>`}).join(', '): "Hiç.")
+            .setColor("DARK_RED")
+            message.channel.send({embeds: [embed]}).then(msg => {
                 setTimeout(() => {
                     msg.delete()
-                }, 1000, 5)
+                }, 1000, 15)
             })
             message.delete()
         }
