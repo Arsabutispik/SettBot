@@ -7,4 +7,4 @@ SettBot [NeonPrice Discord Sunucusu](https://discord.gg/mwZBS9H9wa) için tasarl
 - **Moderasyon Komutları**
 Gibi şeyler yer almaktadır şimdilik. 
 ---
-Ben İspik#6441, bot sorunları veya öneriler için bir issue 
+Ben İspik#6441, bot sorunları veya öneriler için bir [issue](https://github.com/Arsabutispik/SettBot/issues/new) açabilirsiniz.
