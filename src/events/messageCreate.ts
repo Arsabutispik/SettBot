@@ -17,28 +17,34 @@ export default async (client: SettClient, message: Discord.Message) => {
             return;
         }
         if(urlRegex.test(escapeRegex(message.content))){
+            urlRegex.lastIndex = 0
             //Buradaki eğer durumu mesajı gönderen üyenin belirli bir izni varmı diye bakıyor. Varsa kod çalışmıyor
-            if(message.member!.permissions.has("ADMINISTRATOR")){
+            if(message.member!.permissions.has("MANAGE_MESSAGES")){
                 return
-            } //NOT: Buradaki listeyi istediğiniz kadar uzatabilirsiniz
+            } 
+             
+            //NOT: Buradaki listeyi istediğiniz kadar uzatabilirsiniz
             //Kanal listesinde gönderilen kanalın ID'si var mı diye bakıyor.
             if(allowedChannels.includes(message.channel.id)) {
                 return;
             }
             //Bütün linklerin üzerinden geçen bir 'for' döngüsü
+            
             for(const urls of urlRegex.exec(escapeRegex(message.content))!.input.split(/  | /ig)){
+                //Bunu sıfırlamazsak bot bozulur
+                urlRegex.lastIndex = 0
                 //İzin verilen bir link varsa döngüye bir şey yapmadan devam et.
                 if(allowed.includes(urls)){
                     continue
                 } else {
                     //İzin verilen link yoksa mesajı sil ve uyarı mesajı at.
-                    message.delete()
                     const embed = new MessageEmbed()
                     .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
                     .setDescription("Bu kanalda link paylaşmak yasaktır. Lütfen şu kanallarda link paylaşınız:")
-                    .addField("Link İzni Verilen Kanallar", allowedChannels.length > 0 ? allowedChannels.map(m => {`<#${m}>`}).join(', '): "Hiç.")
+                    .addField("Link İzni Verilen Kanallar", allowedChannels.length > 0 ? allowedChannels.map(m => `<#${m}>`).join(', '): "Hiç.")
                     .setColor("DARK_RED")
                     message.channel.send({embeds: [embed]})
+                    message.delete()
                 }
             }
         }
