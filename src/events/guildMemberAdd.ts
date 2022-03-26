@@ -7,7 +7,8 @@ export default async(_client: SettClient, member: GuildMember) => {
     .setDescription(`Hoşgeldin ${member}! Düello izleyicileri seninle birlikte ${member.guild.memberCount} kişi oldu. Belki düellolara katılırsın?`)
     .setColor("RANDOM")
     .setTimestamp()
-
+    .setImage("https://c.tenor.com/Z0IZ_YWXD3wAAAAC/sett-league-of-legends.gif")
+    
     const channel = await member.guild.channels.fetch("kanal id'si") as BaseGuildTextChannel
     channel.send({embeds: [embed]})
     member.roles.add("id")
