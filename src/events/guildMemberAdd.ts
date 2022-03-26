@@ -1,6 +1,7 @@
 import { BaseGuildTextChannel, GuildMember, MessageEmbed } from 'discord.js';
+import { SettClient } from '../types';
 
-export default async(member: GuildMember) => {
+export default async(_client: SettClient, member: GuildMember) => {
     const embed = new MessageEmbed()
     .setAuthor({name: member.user.tag, iconURL: member.user.displayAvatarURL({dynamic: true})})
     .setDescription(`Hoşgeldin ${member}! Düello izleyicileri seninle birlikte ${member.guild.memberCount} kişi oldu. Belki düellolara katılırsın?`)

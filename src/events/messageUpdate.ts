@@ -1,12 +1,13 @@
 import { Message, MessageEmbed } from "discord.js"
 import allowed from '../allowedURIs.js';
 import allowedChannels from '../allowedURIChannels.json' assert {type: 'json'};
+import {SettClient} from '../types';
 
 const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
 
 const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-export default async(_oldMessage: Message, newMessage: Message) =>{
+export default async(_client: SettClient, _oldMessage: Message, newMessage: Message) =>{
     if(urlRegex.test(escapeRegex(newMessage.content))){
         urlRegex.lastIndex = 0
         //Buradaki eğer durumu mesajı gönderen üyenin belirli bir izni varmı diye bakıyor. Varsa kod çalışmıyor
