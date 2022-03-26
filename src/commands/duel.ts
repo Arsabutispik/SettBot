@@ -11,7 +11,7 @@ export default {
     async execute({message, client, args}) {
         if(duelChannels.includes(message.channel.id)){
             const embed = new MessageEmbed()
-            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setDescription("Bu kanalda düello yapmak yasaktır. Lütfen şu kanallarda düello yapınız:")
             .addField("Düello İzni Verilen Kanallar", duelChannels.length > 0 ? duelChannels.map(m => {`<#${m}>`}).join(', '): "Hiç.")
             .setColor("DARK_RED")
@@ -24,7 +24,7 @@ export default {
         }
         if(client.duelChannel.has(message.channel.id)){
             const embed = new MessageEmbed()
-            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
             .setDescription(`Bu kanalda zaten bir düello var veya bekleyen bir düello var.`)
             message.channel.send({embeds: [embed]})
@@ -32,7 +32,7 @@ export default {
         }
         if(args.length == 0 || args.length > 1) {
             const embed = new MessageEmbed()
-            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
             .setDescription(`Lütfen bir düello altın miktarı veriniz ya da düello miktarı dışında bir şey yazmayınız.`)
             message.channel.send({embeds: [embed]})
@@ -42,7 +42,7 @@ export default {
 
         if(isNaN(amount)){
             const embed = new MessageEmbed()
-            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
             .setDescription(`Verilen düello altın miktarı bir sayı değil.`)
             message.channel.send({embeds: [embed]})
@@ -53,7 +53,7 @@ export default {
 
         if(!attackerInfo) {
             const embed = new MessageEmbed()
-            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
             .setDescription(`${message.author.username}, profiliniz oluşturulmamıştır lütfen \`s!profil\` veya \`@${client.user!.tag} profil\` ile profilinizi oluşturun`)
             message.channel.send({embeds: [embed]})
@@ -62,7 +62,7 @@ export default {
         
         if(attackerInfo.balance < amount) {
             const embed = new MessageEmbed()
-            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
             .setDescription(`Verdiğiniz düello altın miktarı bütçenizi aşıyor lütfen daha az bir miktar giriniz.`)
             message.channel.send({embeds: [embed]})
@@ -70,7 +70,7 @@ export default {
         }
 
         const embed = new MessageEmbed()
-        .setAuthor({name: client.user!.tag, iconURL: client.user!.displayAvatarURL()})
+        .setAuthor({name: client.user!.tag, iconURL: client.user!.displayAvatarURL({dynamic: true})})
         .setDescription(`${message.author.tag} düello başlattı! Düello bahsi \`${amount}\`<:Gold:955006535472410654> altın. Kazanan \`${amount}\`<:Gold:955006535472410654> altın alacak. Katılmak için \`evet\` yazınız`)
         .setFooter({text: "Düelloyu iptal etmek için iptal yazınız. (5 dakika sonra iptal olacak)", iconURL: message.author.displayAvatarURL()})
         message.channel.send({embeds: [embed]})
@@ -83,7 +83,7 @@ export default {
             const embed = new MessageEmbed()
             .setColor("RED")
             .setDescription("Düello 5 dakika kuralı yüzünden iptal edilmiştir.")
-            .setFooter({text: client.user!.tag, iconURL: client.user!.displayAvatarURL()})
+            .setFooter({text: client.user!.tag, iconURL: client.user!.displayAvatarURL({dynamic: true})})
             message.channel.send({embeds: [embed]})
             client.duelChannel.delete(message.channel.id)
             return
@@ -92,7 +92,7 @@ export default {
             const embed = new MessageEmbed()
             .setColor("RED")
             .setDescription("Düello, düello kurucu tarafından iptal edilmiştir.")
-            .setFooter({text: client.user!.tag, iconURL: client.user!.displayAvatarURL()})
+            .setFooter({text: client.user!.tag, iconURL: client.user!.displayAvatarURL({dynamic: true})})
             message.channel.send({embeds: [embed]})
             client.duelChannel.delete(message.channel.id)
             return
@@ -101,7 +101,7 @@ export default {
 
         if(!deffenderInfo) {
             const embed = new MessageEmbed()
-            .setAuthor({name: deffender.author.tag, iconURL: deffender.author.displayAvatarURL()})
+            .setAuthor({name: deffender.author.tag, iconURL: deffender.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
             .setDescription(`${deffender.author.username}, profiliniz oluşturulmamıştır lütfen \`s!profil\` veya \`@${client.user!.tag} profil\` ile profilinizi oluşturun`)
             message.channel.send({embeds: [embed]})
@@ -110,7 +110,7 @@ export default {
 
         if(deffenderInfo.balance < amount) {
             const embed = new MessageEmbed()
-            .setAuthor({name: deffender.author.tag, iconURL: deffender.author.displayAvatarURL()})
+            .setAuthor({name: deffender.author.tag, iconURL: deffender.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
             .setDescription(`Düello altın miktarı bütçenizi aşıyor. Düelloya giremezsiniz`)
             message.channel.send({embeds: [embed]})

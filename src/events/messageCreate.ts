@@ -39,7 +39,7 @@ export default async (client: SettClient, message: Discord.Message) => {
                 } else {
                     //İzin verilen link yoksa mesajı sil ve uyarı mesajı at.
                     const embed = new MessageEmbed()
-                    .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+                    .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
                     .setDescription("Bu kanalda link paylaşmak yasaktır. Lütfen şu kanallarda link paylaşınız:")
                     .addField("Link İzni Verilen Kanallar", allowedChannels.length > 0 ? allowedChannels.map(m => `<#${m}>`).join(', '): "Hiç.")
                     .setColor("DARK_RED")

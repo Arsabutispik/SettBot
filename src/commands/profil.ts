@@ -23,7 +23,7 @@ export default {
                 return
             }
             const embed = new MessageEmbed()
-            .setAuthor({name: targetUser.user.tag, iconURL: targetUser.user.displayAvatarURL()})
+            .setAuthor({name: targetUser.user.tag, iconURL: targetUser.user.displayAvatarURL({dynamic: true})})
             .setColor("RANDOM")
             .setFields({
                 name: "Altın <:Gold:955006535472410654>",
@@ -46,7 +46,7 @@ export default {
             return
         }
         const embed = new MessageEmbed()
-        .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+        .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
         .setColor("RANDOM")
         .setFields({
             name: "Altın <:Gold:955006535472410654>",
