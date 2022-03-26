@@ -9,4 +9,5 @@ export default async(member: GuildMember) => {
 
     const channel = await member.guild.channels.fetch("kanal id'si") as BaseGuildTextChannel
     channel.send({embeds: [embed]})
+    member.roles.add("id")
 }
