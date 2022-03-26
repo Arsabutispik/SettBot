@@ -116,7 +116,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
     const defenderInfo = client.duelInfo.get(defender.id)
 
     const embed = new MessageEmbed()
-    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
     .setColor("YELLOW")
     .setDescription(`${attacker} Saldırı sırası sende!\nSaldır ⚔️\nSavun 🛡️\nCan Doldur(${attackerInfo!.heal}) ❤️\nUlti 🎯\nKaç 🏃‍♂️`)
     .setFooter({text: `Can: ${attackerInfo!.hp} Düşman Canı: ${defenderInfo!.hp}`, iconURL: client.user!.displayAvatarURL()})
@@ -153,7 +153,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                 //Hasar defans yapan kişinin canından fazla ise oyunu bitir.
                 if(defenderInfo!.hp < damage){
                     const embed = new MessageEmbed()
-                    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+                    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
                     .setDescription(replaceMessage(message.message, attacker, defender, damage))
                     .setImage(message.url)
                     .setColor("RANDOM")
@@ -168,7 +168,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                     return attacker
                 }
                 const embed = new MessageEmbed()
-                .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+                .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
                 .setDescription(replaceMessage(message.message, attacker, defender, damage))
                 .setImage(message.url)
                 .setColor("RANDOM")
@@ -186,7 +186,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                 //Hasar defans yapan kişinin canından fazla ise oyunu bitir.
                 if(defenderInfo!.hp < damage){
                     const embed = new MessageEmbed()
-                    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+                    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
                     .setDescription(replaceMessage(message.message, attacker, defender, damage))
                     .setImage(message.url)
                     .setColor("RANDOM")
@@ -201,7 +201,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                 }
 
                 const embed = new MessageEmbed()
-                .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+                .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
                 .setDescription(replaceMessage(message.message, attacker, defender, damage))
                 .setImage(message.url)
                 .setColor("RANDOM")
@@ -226,7 +226,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
             const defmessage = defenceMessage[randomRange(0, attackMessage.length - 1)]
 
             const embed = new MessageEmbed()
-            .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+            .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
             .setDescription(replaceMessage(defmessage.message, attacker, defender, damage))
             .setImage(defmessage.url)
             .setColor("RANDOM")
@@ -253,7 +253,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                 return
             }
             const embed2 = new MessageEmbed()
-            .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+            .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
             .setDescription(replaceMessage(healmessage.message, attacker, defender, damage))
             .setImage(healmessage.url)
             .setColor("RANDOM")
@@ -275,7 +275,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                     //Hasar defans yapan kişinin canından fazla ise oyunu bitir.
                     if(defenderInfo!.hp < damage){
                         const embed = new MessageEmbed()
-                        .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+                        .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
                         .setDescription(replaceMessage(message.message, attacker, defender, damage))
                         .setImage(message.url)
                         .setColor("RANDOM")
@@ -291,7 +291,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                     }
 
                     const embed = new MessageEmbed()
-                    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+                    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
                     .setDescription(replaceMessage(message.message, attacker, defender, damage))
                     .setImage(message.url)
                     .setColor("RANDOM")
@@ -309,7 +309,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                     //Hasar defans yapan kişinin canından fazla ise oyunu bitir.
                     if(defenderInfo!.hp < damage){
                         const embed = new MessageEmbed()
-                        .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+                        .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
                         .setDescription(replaceMessage(message.message, attacker, defender, damage))
                         .setImage(message.url)
                         .setColor("RANDOM")
@@ -325,7 +325,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
                     }
 
                     const embed = new MessageEmbed()
-                    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+                    .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
                     .setDescription(replaceMessage(message.message, attacker, defender, damage))
                     .setImage(message.url)
                     .setColor("RANDOM")
@@ -351,7 +351,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
 
         case "kaç":
             const embed3 = new MessageEmbed()
-            .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL()})
+            .setAuthor({name: attacker.tag, iconURL: attacker.displayAvatarURL({dynamic: true})})
             .setDescription(`\`${attacker.username}\` düellodan korkak gibi kaçtı! \`${defender.username}\` Oyunu kazandı.`)
             .setImage("https://cdn.discordapp.com/attachments/933095626844037224/955024824026157066/jinxbase.gif")
             .setColor("RANDOM")

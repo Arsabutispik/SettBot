@@ -3,8 +3,8 @@ import Discord, { MessageEmbed } from "discord.js";
 import { log } from "../utils/utils.js";
 import { SettClient } from "../types";
 import allowed from '../allowedURIs.js';
-import allowedChannels from '../allowedURIChannels.json';
-
+import allowedChannels from '../allowedURIChannels.json' assert {type: 'json'};
+import { PREFIX } from '../config.json' assert {type: 'json'}
 //Bir kaç regex
 const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
 
@@ -39,7 +39,7 @@ export default async (client: SettClient, message: Discord.Message) => {
                 } else {
                     //İzin verilen link yoksa mesajı sil ve uyarı mesajı at.
                     const embed = new MessageEmbed()
-                    .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
+                    .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
                     .setDescription("Bu kanalda link paylaşmak yasaktır. Lütfen şu kanallarda link paylaşınız:")
                     .addField("Link İzni Verilen Kanallar", allowedChannels.length > 0 ? allowedChannels.map(m => `<#${m}>`).join(', '): "Hiç.")
                     .setColor("DARK_RED")
@@ -49,7 +49,7 @@ export default async (client: SettClient, message: Discord.Message) => {
             }
         }
         //Bir regex ve prefix kontrolü
-        const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${escapeRegex("s!")})\\s*`);
+        const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${escapeRegex(PREFIX)})\\s*`);
         if (!prefixRegex.test(message.content)) return;
         //Komut kontrolleri
         //@ts-ignore

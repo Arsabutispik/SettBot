@@ -1,4 +1,5 @@
 {
     "TOKEN": "Token",
-    "MONGODB_URI": "URI"
+    "MONGODB_URI": "URI",
+    "PREFIX": "prefix"
 }
