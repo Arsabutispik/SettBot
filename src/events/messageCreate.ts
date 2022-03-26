@@ -3,8 +3,8 @@ import Discord, { MessageEmbed } from "discord.js";
 import { log } from "../utils/utils.js";
 import { SettClient } from "../types";
 import allowed from '../allowedURIs.js';
-import allowedChannels from '../allowedURIChannels.json';
-
+import allowedChannels from '../allowedURIChannels.json' assert {type: 'json'};
+import { PREFIX } from '../config.json' assert {type: 'json'}
 //Bir kaç regex
 const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
 
@@ -49,7 +49,7 @@ export default async (client: SettClient, message: Discord.Message) => {
             }
         }
         //Bir regex ve prefix kontrolü
-        const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${escapeRegex("s!")})\\s*`);
+        const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${escapeRegex(PREFIX)})\\s*`);
         if (!prefixRegex.test(message.content)) return;
         //Komut kontrolleri
         //@ts-ignore

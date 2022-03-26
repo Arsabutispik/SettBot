@@ -2,7 +2,7 @@ import { BaseGuildTextChannel, Message, MessageEmbed, User } from "discord.js";
 import { commandBase } from "../types";
 import duelHandler from "../utils/duelHandler.js";
 import { randomRange } from "../utils/utils.js";
-import duelChannels from '../duelChannels.json';
+import duelChannels from '../duelChannels.json' assert {type: 'json'};
 
 const chance = randomRange(1, 2)
 export default {
