@@ -125,6 +125,12 @@ export default {
         }
         if(winner){
             message.channel.send(`Düello bitmiştir! Düello kazananı ${winner} kişisidir ve ${amount}<:Gold:955006535472410654> altınla ayrılmıştır.`)
+            client.DBUser.findOneAndUpdate({_id: winner.id}, {$inc: {win: 1, balance: amount}})
+            if(winner.id === message.author.id){
+                client.DBUser.findOneAndUpdate({_id: deffender.id}, {$inc: {balance: -amount}})
+            } else {
+                client.DBUser.findOneAndUpdate({_id: message.author.id}, {$inc: {balance: -amount}})
+            }
         }
     }
 } as commandBase
