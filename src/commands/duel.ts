@@ -9,7 +9,7 @@ export default {
     name: "düello",
     category: "Eğlence",
     async execute({message, client, args}) {
-        if(duelChannels.includes(message.channel.id)){
+        if(!duelChannels.includes(message.channel.id)){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setDescription("Bu kanalda düello yapmak yasaktır. Lütfen şu kanallarda düello yapınız:")
