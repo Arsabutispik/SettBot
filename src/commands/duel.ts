@@ -105,6 +105,7 @@ export default {
             .setColor("RED")
             .setDescription(`${deffender.author.username}, profiliniz oluşturulmamıştır lütfen \`s!profil\` veya \`@${client.user!.tag} profil\` ile profilinizi oluşturun`)
             message.channel.send({embeds: [embed]})
+            client.duelChannel.delete(message.channel.id)
             return;
         }
 
