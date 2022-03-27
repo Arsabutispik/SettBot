@@ -13,7 +13,7 @@ export default {
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setDescription("Bu kanalda düello yapmak yasaktır. Lütfen şu kanallarda düello yapınız:")
-            .addField("Düello İzni Verilen Kanallar", duelChannels.length > 0 ? duelChannels.map(m => {`<#${m}>`}).join(', '): "Hiç.")
+            .addField("Düello İzni Verilen Kanallar", duelChannels.length > 0 ? duelChannels.map(m => `<#${m}>`).join(', '): "Hiç.")
             .setColor("DARK_RED")
             message.channel.send({embeds: [embed]}).then(msg => {
                 setTimeout(() => {
@@ -21,6 +21,7 @@ export default {
                 }, 1000, 15)
             })
             message.delete()
+            return
         }
         if(client.duelChannel.has(message.channel.id)){
             const embed = new MessageEmbed()
