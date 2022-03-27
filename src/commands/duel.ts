@@ -4,7 +4,7 @@ import duelHandler from "../utils/duelHandler.js";
 import { randomRange } from "../utils/utils.js";
 import duelChannels from '../duelChannels.json' assert {type: 'json'};
 
-const chance = randomRange(1, 2)
+
 export default {
     name: "düello",
     category: "Eğlence",
@@ -118,7 +118,8 @@ export default {
             return;
         }
         let winner: User | undefined;
-        console.log(chance)
+        const chance = randomRange(1, 2)
+
         if(chance == 1) {
             winner = await duelHandler(client, message.author, deffender.author, message.channel as BaseGuildTextChannel, amount)
         } else if (chance == 2) {
@@ -126,11 +127,11 @@ export default {
         }
         if(winner){
             message.channel.send(`Düello bitmiştir! Düello kazananı ${winner} kişisidir ve ${amount}<:Gold:955006535472410654> altınla ayrılmıştır.`)
-            client.DBUser.findOneAndUpdate({_id: winner.id}, {$inc: {win: 1, balance: amount}})
+            await client.DBUser.findOneAndUpdate({_id: winner.id}, {$inc: {win: 1, balance: amount}})
             if(winner.id === message.author.id){
-                client.DBUser.findOneAndUpdate({_id: deffender.id}, {$inc: {balance: -amount}})
+                await client.DBUser.findOneAndUpdate({_id: deffender.id}, {$inc: {balance: -amount}})
             } else {
-                client.DBUser.findOneAndUpdate({_id: message.author.id}, {$inc: {balance: -amount}})
+                await client.DBUser.findOneAndUpdate({_id: message.author.id}, {$inc: {balance: -amount}})
             }
         }
     }
