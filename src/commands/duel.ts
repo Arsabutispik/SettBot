@@ -4,12 +4,12 @@ import duelHandler from "../utils/duelHandler.js";
 import { randomRange } from "../utils/utils.js";
 import duelChannels from '../duelChannels.json' assert {type: 'json'};
 
-const chance = randomRange(1, 2)
+
 export default {
     name: "düello",
     category: "Eğlence",
     async execute({message, client, args}) {
-        if(duelChannels.includes(message.channel.id)){
+        if(!duelChannels.includes(message.channel.id)){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setDescription("Bu kanalda düello yapmak yasaktır. Lütfen şu kanallarda düello yapınız:")
@@ -105,6 +105,7 @@ export default {
             .setColor("RED")
             .setDescription(`${deffender.author.username}, profiliniz oluşturulmamıştır lütfen \`s!profil\` veya \`@${client.user!.tag} profil\` ile profilinizi oluşturun`)
             message.channel.send({embeds: [embed]})
+            client.duelChannel.delete(message.channel.id)
             return;
         }
 
@@ -117,7 +118,8 @@ export default {
             return;
         }
         let winner: User | undefined;
-        console.log(chance)
+        const chance = randomRange(1, 2)
+
         if(chance == 1) {
             winner = await duelHandler(client, message.author, deffender.author, message.channel as BaseGuildTextChannel, amount)
         } else if (chance == 2) {
@@ -125,6 +127,12 @@ export default {
         }
         if(winner){
             message.channel.send(`Düello bitmiştir! Düello kazananı ${winner} kişisidir ve ${amount}<:Gold:955006535472410654> altınla ayrılmıştır.`)
+            await client.DBUser.findOneAndUpdate({_id: winner.id}, {$inc: {win: 1, balance: amount}})
+            if(winner.id === message.author.id){
+                await client.DBUser.findOneAndUpdate({_id: deffender.id}, {$inc: {balance: -amount}})
+            } else {
+                await client.DBUser.findOneAndUpdate({_id: message.author.id}, {$inc: {balance: -amount}})
+            }
         }
     }
 } as commandBase

@@ -49,7 +49,7 @@ const attackMessage: Array<{message: string, url: string}> = [
         url: "https://cdn.discordapp.com/attachments/933095626844037224/954857672153370674/settW33.gif"
     },
     {
-        message: "\`{attacker}\`, Warwick'in *Cani Diş* yeteneğini kullanarak \`{defender} kişisine \`{damage}\` hasar verdi!",
+        message: "\`{attacker}\`, Warwick'in *Cani Diş* yeteneğini kullanarak \`{defender}\` kişisine \`{damage}\` hasar verdi!",
         url: "https://cdn.discordapp.com/attachments/933095626844037224/954857671448735744/WWW.gif"
     }
 ]
@@ -365,7 +365,7 @@ const duelHandler = async(client: SettClient, attacker: User, defender: User, ch
             return defender
 
     }
-    return
+     
 }
 
 export default duelHandler

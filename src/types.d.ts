@@ -40,7 +40,9 @@ export declare class SettClient extends Client {
 interface UserInfo {
     _id: string
     balance: number
-    win: number
+    win: number,
+    hourly: Date,
+    daily: Date
 }
 
 interface duellerInfo {

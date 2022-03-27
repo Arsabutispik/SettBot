@@ -9,7 +9,10 @@ const userSchema = new Schema({
     win: {
         type: Number,
         default: 0
-    }
+    },
+    hourly: Date,
+    
+    daily: Date
 });
 
 export default model("userSchema", userSchema);
