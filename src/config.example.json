@@ -1,5 +1,6 @@
 {
     "TOKEN": "Token",
     "MONGODB_URI": "URI",
-    "PREFIX": "prefix"
+    "PREFIX": "prefix",
+    "MOD_LOG": "id"
 }
