@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import {commandBase} from '../types';
+import {commandBase} from '../../types';
 
 export default {
     name: "profil",
