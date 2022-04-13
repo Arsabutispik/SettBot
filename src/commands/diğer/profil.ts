@@ -4,6 +4,7 @@ import {commandBase} from '../../types';
 export default {
     name: "profil",
     category: "Bilgilendirici",
+    description: "Bir kişinin veya kullanıcının profilini gösterir ya da profil oluşturur",
     async execute({client, message, args}) {
         if(args.length){
             let targetUser = message.mentions.members!.first() || message.guild!.members.cache.get(args[0])

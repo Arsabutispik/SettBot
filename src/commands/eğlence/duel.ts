@@ -8,6 +8,9 @@ import duelChannels from '../../duelChannels.json' assert {type: 'json'};
 export default {
     name: "düello",
     category: "Eğlence",
+    description: "Düello kanalarında düello yapılmasını sağlar",
+    usage: "s!düello <miktar>",
+    examples: "s!düello 500 (500 <:Gold:955006535472410654> bahis koyar)",
     async execute({message, client, args}) {
         if(!duelChannels.includes(message.channel.id)){
             const embed = new MessageEmbed()
