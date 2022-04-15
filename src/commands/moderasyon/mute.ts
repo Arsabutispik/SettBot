@@ -1,6 +1,9 @@
 import { Message, MessageEmbed } from "discord.js";
 import ms from "ms";
 import { commandBase } from "../../types";
+import modlog from "../../utils/modlog.js";
+import caseSchema from "../../schemas/caseSchema.js";
+import punishment from "../../schemas/punishmentSchema.js";
 
 export default {
     name: "mute",
@@ -83,12 +86,15 @@ export default {
                 return
             }
         }
-        const longduration = ms(duration, {long: true}).replaceAll(/seconds|second/, "saniye").replaceAll(/minutes|minute/, "dakika").replaceAll(/hours|hour/, "saat").replaceAll(/day|days/, "gün")
+        const cases = await caseSchema.findOne({_id: message.guild!.id})
+        const longduration = ms(duration, {long: true}).replace(/seconds|second/, "saniye").replace(/minutes|minute/, "dakika").replace(/hours|hour/, "saat").replace(/days|day/, "gün")
         const embed = new MessageEmbed()
         .setColor("DARK_GREEN")
         .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
-        .setDescription(`**${targetMember.user.tag}**, ${longduration} boyunca susturuldu`)
+        .setDescription(`**${targetMember.user.tag}**, ${longduration} boyunca susturuldu (Olay #${cases.case})`)
         .setTimestamp(new Date(new Date().getTime() + duration))
         message.channel.send({embeds: [embed]})
+        await new punishment({userId: targetMember.id, staffId: message.author.id, reason, expires: new Date(Date.now() + duration), type: "mute"}).save()
+        modlog(message.guild!, targetMember.user, "SUSTUR", message.author, reason, duration)
     }
 } as commandBase

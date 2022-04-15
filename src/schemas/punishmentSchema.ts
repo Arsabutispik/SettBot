@@ -1,4 +1,5 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
+const { model, Schema } = mongoose
 
 const reqString = {
     type: String,
@@ -19,4 +20,4 @@ const schema = new Schema({
     timestamps: true
 })
 
-export default mongoose.model("schema", schema)
+export default model("punishmentschema", schema)

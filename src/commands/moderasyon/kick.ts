@@ -81,9 +81,9 @@ export default {
             const cases = await caseSchema.findOne({_id: message.guild!.id})
             try {
                 await user.send(`NeonPrice sunucusundan atıldınız. Sebep: ${reason}`)
-                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** atıldı (Olay #${cases.cases + 1}) Kullanıcı özel bir mesaj ile bildirildi`)
+                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** atıldı (Olay #${cases.case}) Kullanıcı özel bir mesaj ile bildirildi`)
             } catch {
-                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.cases + 1}) Kullanıcıya özel mesaj atılamadı`)
+                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
             }
             modlog(message.guild!, user.user, "AT", message.author, args.slice(2).join(" "))
             await user.ban({days: 7, reason})
@@ -119,9 +119,9 @@ export default {
             const cases = await caseSchema.findOne({_id: message.guild!.id})
             try {
                 await user.send(`NeonPrice sunucusundan atıldınız. Sebep: ${reason}`)
-                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** atıldı (Olay #${cases.cases + 1}) Kullanıcı özel bir mesaj ile bildirildi`)
+                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** atıldı (Olay #${cases.case}) Kullanıcı özel bir mesaj ile bildirildi`)
             } catch {
-                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.cases + 1}) Kullanıcıya özel mesaj atılamadı`)
+                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
             }
             modlog(message.guild!, user.user, "AT", message.author, reason)
             user.kick(reason)
