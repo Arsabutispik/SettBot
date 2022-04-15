@@ -6,6 +6,8 @@ import config from './config.json' assert {type: 'json'};
 import { SettClient } from './types';
 import { registerCommands, registerEvents } from './utils/registery.js';
 import { log } from './utils/utils.js';
+import checkPunishments from './utils/checkPunishments.js';
+
 const settBot = new Client({intents: 32767}) as SettClient
 
 (async () => {
@@ -38,6 +40,6 @@ const settBot = new Client({intents: 32767}) as SettClient
     } catch (e) {
         log("ERROR", "src/index.ts", `Bağlanırken Hata: ${e.message}`);
     }
-
+    await checkPunishments(settBot)
     log("SUCCESS","src/index.ts","Bütün komutlar, kategoriler, olaylar ve koleksiyonlar bota tanıtıldı. Veri tabanı bağlandı");
 })();
