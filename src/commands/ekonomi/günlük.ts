@@ -1,9 +1,11 @@
 import { MessageEmbed } from "discord.js";
-import { commandBase } from "../types";
-import { msToTime, randomRange } from '../utils/utils.js'
+import { commandBase } from "../../types";
+import { msToTime, randomRange } from '../../utils/utils.js'
 
 export default {
     name: "günlük",
+    category: "Ekonomi",
+    description: "Günlük 200 ila 800 arasında <:Gold:955006535472410654> verir",
     async execute({client, message}) {
         let userInfo = await client.DBUser.findOne({_id: message.author.id})
         if(!userInfo) {
