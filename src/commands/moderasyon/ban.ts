@@ -62,7 +62,10 @@ export default {
             return
         }
         const duration = ms(args[1])
-        const cases = await caseSchema.findOne({_id: message.guild!.id})
+        let cases = await caseSchema.findOne({_id: message.guild!.id})
+        if(!cases){
+            cases = await caseSchema.findOneAndUpdate({_id: message.guild!.id}, {}, {setDefaultsOnInsert: true})
+        }
         if(duration){
             const longduration = ms(duration, {long: true}).replace(/seconds|second/, "saniye").replace(/minutes|minute/, "dakika").replace(/hours|hour/, "saat").replace(/days|day/, "gün")
             let reason = args.slice(2).join(" ")

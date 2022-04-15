@@ -10,6 +10,7 @@ export default {
     description: "Bir kullanıcıyı belirli bir süre susturur",
     usage: "s!mute <kullanıcı> <süre> <sebep>",
     examples: "s!mute <@950752419233542195> 3h aklını topla gel",
+    category: "Moderasyon",
     async execute({message, args}) {
         const targetMember = message.mentions.members?.first() || message.guild!.members.cache.get(args[0])
         if(!targetMember){
@@ -86,7 +87,10 @@ export default {
                 return
             }
         }
-        const cases = await caseSchema.findOne({_id: message.guild!.id})
+        let cases = await caseSchema.findOne({_id: message.guild!.id})
+        if(!cases){
+            cases = await caseSchema.findOneAndUpdate({_id: message.guild!.id}, {}, {setDefaultsOnInsert: true})
+        }
         const longduration = ms(duration, {long: true}).replace(/seconds|second/, "saniye").replace(/minutes|minute/, "dakika").replace(/hours|hour/, "saat").replace(/days|day/, "gün")
         const embed = new MessageEmbed()
         .setColor("DARK_GREEN")
