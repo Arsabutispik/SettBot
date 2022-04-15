@@ -8,7 +8,7 @@ export default {
     category: "Moderasyon",
     description: "Bir kullanıcıyı sunucudan atar eğer istenilirse 7 günlük mesajlarını da siler",
     usage: "s!kick [-temizle] <kullanıcı> <sebep>",
-    examples: "s!kick <@950752419233542195>",
+    examples: "s!kick <@950752419233542195> spam için sunucuya girmiş\ns!kick -temizle <@950752419233542195> hileler için yardım",
     async execute({message, args}) {
         const clean = args[0]
         if(clean == "-temizle"){
@@ -66,7 +66,7 @@ export default {
                 const msg = await message.reply("Bir sebep belirtmedin lütfen bir sebep belirt")
                  const filter = (m: Message) => m.author.id === message.author.id
                  try{
-                     const msg = await message.channel.awaitMessages({filter, max: 1, idle: 1000 * 60 * 5})
+                     const msg = await message.channel.awaitMessages({filter, max: 1, time: 1000 * 60 * 5, errors: ['time']})
                      reason = msg.first()!.content
                  } catch {
                      msg.delete()
@@ -75,6 +75,7 @@ export default {
                              m.delete()
                          }, 1000 * 20)
                      })
+                    return
                  }
              }
             const cases = await caseSchema.findOne({_id: message.guild!.id})
@@ -112,6 +113,7 @@ export default {
                              m.delete()
                          }, 1000 * 20)
                      })
+                    return
                  }
              }
             const cases = await caseSchema.findOne({_id: message.guild!.id})

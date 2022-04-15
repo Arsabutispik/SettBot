@@ -70,7 +70,7 @@ export default {
                const msg = await message.reply("Bir sebep belirtmedin lütfen bir sebep belirt")
                 const filter = (m: Message) => m.author.id === message.author.id
                 try{
-                    const msg = await message.channel.awaitMessages({filter, max: 1, idle: 1000 * 60 * 5})
+                    const msg = await message.channel.awaitMessages({filter, max: 1, time: 1000 * 60 * 5, errors: ['time']})
                     reason = msg.first()!.content
                 } catch {
                     msg.delete()
@@ -79,6 +79,7 @@ export default {
                             m.delete()
                         }, 1000 * 20)
                     })
+                    return
                 }
             }
             try{
@@ -96,7 +97,7 @@ export default {
                 const msg = await message.reply("Bir sebep belirtmedin lütfen bir sebep belirt")
                  const filter = (m: Message) => m.author.id === message.author.id
                  try{
-                     const msg = await message.channel.awaitMessages({filter, max: 1, idle: 1000 * 60 * 5})
+                     const msg = await message.channel.awaitMessages({filter, max: 1, time: 1000 * 60 * 5, errors: ['time']})
                      reason = msg.first()!.content
                  } catch {
                      msg.delete()
@@ -105,6 +106,7 @@ export default {
                              m.delete()
                          }, 1000 * 20)
                      })
+                     return
                  }
              }
             try{
