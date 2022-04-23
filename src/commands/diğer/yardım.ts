@@ -15,7 +15,7 @@ export default {
                 value: `\`${client.categories.map(val => val).join(", ")}\``
             }, {
                 name: "Komutlar",
-                value: `\`${client.commands.map(val => val).join(", ")}`
+                value: `\`${client.commands.map(val => val.name).join(", ")}\``
             })
             .setTimestamp()
             message.channel.send({embeds: [embed]})
@@ -54,7 +54,7 @@ export default {
                 value: `\`${client.categories.map(val => val).join(", ")}\``
             }, {
                 name: "Komutlar",
-                value: `\`${client.commands.map(val => val).join(", ")}`
+                value: `\`${client.commands.map(val => val.name).join(", ")}\``
             })
             .setTimestamp()
             message.channel.send({embeds: [embed]})
