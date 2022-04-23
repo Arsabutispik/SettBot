@@ -7,7 +7,7 @@ export default {
     name: "kick",
     category: "Moderasyon",
     description: "Bir kullanıcıyı sunucudan atar eğer istenilirse 7 günlük mesajlarını da siler",
-    usage: "s!kick [-temizle] <kullanıcı> <sebep>",
+    usage: "s!kick [-temizle] <@kullanıcı|id> <sebep>",
     examples: "s!kick <@950752419233542195> spam için sunucuya girmiş\ns!kick -temizle <@950752419233542195> hileler için yardım",
     async execute({message, args}) {
         const clean = args[0]

@@ -9,11 +9,10 @@ export type ExecuteParameters = {
 
 export interface commandBase {
     name: string
-    aliases?: string[]
     category: string
     description: string
-    usage: string
-    examples: string
+    usage?: string
+    examples?: string
     execute(p: ExecuteParameters): any
 }
 

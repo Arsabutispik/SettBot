@@ -9,7 +9,7 @@ export default {
     name: "ban",
     category: "Moderasyon",
     description: "Bir kullanıcıyı sınırsız veya belirli bir süreliğine yasaklar",
-    usage: "s!ban <kullanıcı> [süre] <sebep>",
+    usage: "s!ban <@kullanıcı|id> [süre] <sebep>",
     examples: "s!ban <@950752419233542195> 1h sınavın bitince gel (1 saatlik bir ban atar)\ns!ban <@950752419233542195> 3d troll (3 günlük ban atar)\ns!ban <@950752419233542195> raid (süresiz ban)",
     async execute({message, args}) {
         const user = message.mentions.members?.first() || message.guild!.members.cache.get(args[0])
