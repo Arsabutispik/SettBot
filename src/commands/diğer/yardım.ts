@@ -5,6 +5,7 @@ export default {
     name: "yardım",
     description: "Bot komutları ile yardımcı olur",
     usage: "s!yardım [kategori|komut ismi]",
+    category: "Diğer",
     execute({client, message, args}) {
         if(args.length == 0){
             const embed = new MessageEmbed()
@@ -12,7 +13,7 @@ export default {
             .setColor("RANDOM")
             .addFields({
                 name: "Kategoriler",
-                value: `\`${client.categories.map(val => val).join(", ")}\``
+                value: `\`${client.categories.map(val => val[0]).join(", ")}\``
             }, {
                 name: "Komutlar",
                 value: `\`${client.commands.map(val => val.name).join(", ")}\``
@@ -21,7 +22,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        const comOrCategory = args[0]
+        const comOrCategory = args[0].toLowerCase()
         if(client.commands.has(comOrCategory)){
             const command = client.commands.get(args[0]) as commandBase
             const embed = new MessageEmbed()
@@ -43,7 +44,7 @@ export default {
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RANDOM")
-            .setDescription(`\`${client.categories.map(val => val).join(", ")}\``)
+            .setDescription(`\`${client.categories.get(comOrCategory)!.slice(1).join(", ")}\``)
             message.channel.send({embeds: [embed]})
         } else {
             const embed = new MessageEmbed()
@@ -51,7 +52,7 @@ export default {
             .setColor("RANDOM")
             .addFields({
                 name: "Kategoriler",
-                value: `\`${client.categories.map(val => val).join(", ")}\``
+                value: `\`${client.categories.map(val => val[0]).join(", ")}\``
             }, {
                 name: "Komutlar",
                 value: `\`${client.commands.map(val => val.name).join(", ")}\``
