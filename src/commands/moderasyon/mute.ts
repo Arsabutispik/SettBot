@@ -8,7 +8,7 @@ import punishment from "../../schemas/punishmentSchema.js";
 export default {
     name: "mute",
     description: "Bir kullanıcıyı belirli bir süre susturur",
-    usage: "s!mute <kullanıcı> <süre> <sebep>",
+    usage: "s!mute <@kullanıcı|id> <süre> <sebep>",
     examples: "s!mute <@950752419233542195> 3h aklını topla gel",
     category: "Moderasyon",
     async execute({message, args}) {

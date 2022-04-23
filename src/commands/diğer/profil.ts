@@ -5,6 +5,8 @@ export default {
     name: "profil",
     category: "Bilgilendirici",
     description: "Bir kişinin veya kullanıcının profilini gösterir ya da profil oluşturur",
+    usage: "s!profil [@kullanıcı|id]",
+    examples: "s!profil <@950752419233542195>",
     async execute({client, message, args}) {
         if(args.length){
             let targetUser = message.mentions.members!.first() || message.guild!.members.cache.get(args[0])
