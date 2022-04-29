@@ -1,10 +1,11 @@
 //Gerekli şeyleri aktar
-import Discord, { MessageEmbed } from "discord.js";
+import Discord, { MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed, TextChannel } from "discord.js";
 import { log } from "../utils/utils.js";
 import { SettClient } from "../types";
 import allowed from '../allowedURIs.js';
 import allowedChannels from '../allowedURIChannels.json' assert {type: 'json'};
 import config from '../config.json' assert {type: 'json'}
+import createMail from "../utils/createMail.js";
 //Bir kaç regex
 const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
 
@@ -13,8 +14,99 @@ const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export default async (client: SettClient, message: Discord.Message) => {
     try {
         //Eğer mesajın sahibi bir bot ise, veya webhook ise hiç bir şey yapma.
-        if (message.author.bot || message.channel.type === "DM" || message.webhookId) { 
+        if (message.author.bot || message.webhookId) { 
             return;
+        }
+        if(message.channel.type === "DM" ){
+            const embed = new MessageEmbed()
+            .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
+            .setDescription("NeonPrice sunucusu için bir bilet açmak üzeresiniz, sorununuzu doğru bir şekilde açıkladığınıza emin misiniz? (Amaçsız açılan biletler kural ihlali olur.)")
+            .setColor("DARK_BLUE")
+            const accept = new MessageButton()
+            .setCustomId("kabul")
+            .setDisabled(false)
+            .setStyle("SUCCESS")
+            .setEmoji("✅")
+            const reject = new MessageButton()
+            .setCustomId("reddet")
+            .setDisabled(false)
+            .setStyle("DANGER")
+            .setEmoji("❌")
+
+            const actionRow = new MessageActionRow()
+            .addComponents(accept, reject)
+            const msg = await message.channel.send({embeds: [embed], components: [actionRow]})
+            let reply: MessageComponentInteraction;
+            try {
+                const filter = (interaction: MessageComponentInteraction) => interaction.customId == "kabul" || interaction.customId == "reddet"
+                reply = await msg.awaitMessageComponent({filter, componentType: "BUTTON", time: 300000})
+            } catch {
+                const errorEmbed = new MessageEmbed()
+                .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setDescription("Zamanında bir yanıt gelmedi bilet kapandı")
+                .setColor("DARK_RED")
+                message.channel.send({embeds: [errorEmbed]})
+                accept.setDisabled(true)
+                reject.setDisabled(true)
+                const newRow = new MessageActionRow()
+                .addComponents(accept, reject)
+                msg.edit({components: [newRow]})
+                return
+            }
+            if(reply.customId == "kabul") {
+                const embed = new MessageEmbed()
+                .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setDescription("Bilet açmayı kabul ettiniz biletinize bir veya bir kaç moderatör yakında dönecektir")
+                .setColor("GREEN")
+                message.channel.send({embeds: [embed]})
+                accept.setDisabled(true)
+                reject.setDisabled(true)
+                const newRow = new MessageActionRow()
+                .addComponents(accept, reject)
+                msg.edit({components: [newRow]})
+                const guild = client.guilds.cache.get("Sunucu ID")
+                const channel = await guild!.channels.create(`${message.author.username}-${message.author.tag}`, {parent: "kategori id", permissionOverwrites: [
+                    {
+                        id: "özel id",
+                        allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
+                    },
+                    {
+                        id: message.guild!.roles.everyone,
+                        deny: "VIEW_CHANNEL"
+                    }
+                ]}) as TextChannel
+                const modMailLog = guild!.channels.cache.get(config.MOD_MAIL)
+                const mailEmbed = new MessageEmbed()
+                .setTitle("Yeni Bilet")
+                .setFooter({text: `${message.author.tag} | ${message.author.id}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                if(modMailLog instanceof TextChannel){
+                    modMailLog.send({embeds: [mailEmbed]})
+                }
+                const infoEmbed = new MessageEmbed()
+                .setTitle(`${message.author.tag} Bir Bilet Açtı`)
+                .setDescription(`${config.PREFIX} ile başlayan mesajları bot görmezden gelecektir bu özellik moderatörlerin arasında konuşabilmesi için vardır. ${config.PREFIX}kapat [sebep] ile bileti kapatabilirsiniz.`)
+                .setColor("DARK_GOLD")
+                .setFooter({text: `${message.author.tag} | ${message.author.id}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                const firstEmbed = new MessageEmbed()
+                .setFooter({text: `${message.author.tag} | ${message.author.id}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTitle("Yeni Mesaj")
+                .setDescription(message.content)
+                .setTimestamp()
+                channel.send({embeds: [infoEmbed, firstEmbed]})
+                createMail(message.author, channel)
+            } else if(reply.customId == "reddet"){
+                const errorEmbed = new MessageEmbed()
+                .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setDescription("Bilet açmayı reddettiniz")
+                .setColor("DARK_RED")
+                message.channel.send({embeds: [errorEmbed]})
+                accept.setDisabled(true)
+                reject.setDisabled(true)
+                const newRow = new MessageActionRow()
+                .addComponents(accept, reject)
+                msg.edit({components: [newRow]})
+            }
+            return
         }
         if(urlRegex.test(escapeRegex(message.content))){
             urlRegex.lastIndex = 0
