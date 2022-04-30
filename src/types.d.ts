@@ -9,10 +9,11 @@ export type ExecuteParameters = {
 
 export interface commandBase {
     name: string
+    aliases?: string[]
     category: string
     description: string
-    usage?: string
-    examples?: string
+    usage: string
+    examples: string
     execute(p: ExecuteParameters): any
 }
 
@@ -34,6 +35,8 @@ export declare class SettClient extends Client {
 
     /** A reference for the duel channel */
     public duelChannel: Collection<Snowflake, boolean>
+
+    public modMail: Collection<Snowflake, boolean>
 }
 
 interface UserInfo {
