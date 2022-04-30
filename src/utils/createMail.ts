@@ -1,10 +1,11 @@
 import { Message, MessageEmbed, TextChannel, User } from "discord.js";
-import { chunkSubstr } from "./utils";
+import { chunkSubstr } from "./utils.js";
 import config from '../config.json' assert {type: 'json'}
+import { SettClient } from "src/types.js";
 
 const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-export default async(member: User, channel: TextChannel) => {
+export default async(client: SettClient, member: User, channel: TextChannel) => {
     const filter = (m: Message) => m.author.id == member.id
     const memberDM = await member.createDM()
     const collector = memberDM.createMessageCollector({filter})
@@ -35,7 +36,7 @@ export default async(member: User, channel: TextChannel) => {
     const filter2 = (m: Message) => !m.author.bot
     const collector2 = channel.createMessageCollector({filter: filter2})
     collector2.on("collect", message => {
-        const prefixRegex = new RegExp(escapeRegex(config.PREFIX))
+        const prefixRegex = new RegExp(`^(<@!?${client.user!.id}>|${escapeRegex(config.PREFIX)})\\s*`);
         if (prefixRegex.test(message.content)){
             //@ts-ignore
             const [, matchedPrefix] = message.content.match(prefixRegex);
@@ -60,6 +61,7 @@ export default async(member: User, channel: TextChannel) => {
                 memberDM.send({embeds: [memberTicketClose]})
                 memberDM.delete()
                 channel.delete()
+                client.modMail.delete(member.id)
             }
             return
         }
@@ -73,7 +75,7 @@ export default async(member: User, channel: TextChannel) => {
                 .setDescription(chunk)
                 .setTimestamp()
                 .setColor("GREEN")
-                channel.send({embeds: [embed]})
+                member.send({embeds: [embed]})
            }
         }
         const embed = new MessageEmbed()
@@ -83,9 +85,17 @@ export default async(member: User, channel: TextChannel) => {
         .setDescription(message.content)
         .setColor("GREEN")
         .setTimestamp()
-        channel.send({embeds: [embed]})
+        member.send({embeds: [embed]})
         for(const attachment of message.attachments) {
-            channel.send(attachment[1].url)
+            member.send(attachment[1].url)
         }
+        const sucessEmbed = new MessageEmbed()
+        .setTitle("Mesaj Gönderildi")
+        .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
+        .setFooter({text: member.tag, iconURL: member.displayAvatarURL({dynamic: true})})
+        .setDescription(message.content)
+        .setColor("GREEN")
+        message.channel.send({embeds: [sucessEmbed]})
+        message.delete()
     })
 }

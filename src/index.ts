@@ -17,6 +17,7 @@ const settBot = new Client({intents: 32767}) as SettClient
     settBot.userInfoCache = new Collection();
     settBot.duelChannel = new Collection();
     settBot.duelInfo = new Collection();
+    settBot.modMail = new Collection();
     settBot.DBUser = (await import("./schemas/userSchema.js")).default;
     //Komutları ve olayları yükle
     await registerEvents(settBot, "../events");

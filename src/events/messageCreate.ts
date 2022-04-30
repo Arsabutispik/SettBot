@@ -18,6 +18,7 @@ export default async (client: SettClient, message: Discord.Message) => {
             return;
         }
         if(message.channel.type === "DM" ){
+            if(client.modMail.has(message.author.id)) return
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setDescription("NeonPrice sunucusu için bir bilet açmak üzeresiniz, sorununuzu doğru bir şekilde açıkladığınıza emin misiniz? (Amaçsız açılan biletler kural ihlali olur.)")
@@ -65,13 +66,13 @@ export default async (client: SettClient, message: Discord.Message) => {
                 .addComponents(accept, reject)
                 msg.edit({components: [newRow]})
                 const guild = client.guilds.cache.get("Sunucu ID")
-                const channel = await guild!.channels.create(`${message.author.username}-${message.author.tag}`, {parent: "kategori id", permissionOverwrites: [
+                const channel = await guild!.channels.create(`${message.author.username}-${message.author.discriminator}`, {parent: "954479782987432016", permissionOverwrites: [
                     {
-                        id: "özel id",
+                        id: "özel rol",
                         allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
                     },
                     {
-                        id: message.guild!.roles.everyone,
+                        id: guild!.roles.everyone,
                         deny: "VIEW_CHANNEL"
                     }
                 ]}) as TextChannel
@@ -79,6 +80,7 @@ export default async (client: SettClient, message: Discord.Message) => {
                 const mailEmbed = new MessageEmbed()
                 .setTitle("Yeni Bilet")
                 .setFooter({text: `${message.author.tag} | ${message.author.id}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setColor("AQUA")
                 if(modMailLog instanceof TextChannel){
                     modMailLog.send({embeds: [mailEmbed]})
                 }
@@ -92,8 +94,10 @@ export default async (client: SettClient, message: Discord.Message) => {
                 .setTitle("Yeni Mesaj")
                 .setDescription(message.content)
                 .setTimestamp()
+                .setColor("GREEN")
                 channel.send({embeds: [infoEmbed, firstEmbed]})
-                createMail(message.author, channel)
+                createMail(client, message.author, channel)
+                client.modMail.set(message.author.id, true)
             } else if(reply.customId == "reddet"){
                 const errorEmbed = new MessageEmbed()
                 .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
