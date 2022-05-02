@@ -9,7 +9,7 @@ const roles = emojiRoles as rolesType
 
 export default(client: SettClient) => {
     let message = "Seçilebilecek rol listesi:"
-    Object.keys(roles).forEach(channelId => {
+    Object.keys(roles).forEach(async channelId => {
         const channel = client.channels.cache.get(channelId) as TextChannel
         if(!channel) return
         let emojiID: string[] = []
@@ -20,11 +20,16 @@ export default(client: SettClient) => {
             if(!role) return
             if(!emoji) return
             message += `\n${emoji}: \`${role.name}\``
-            
         })
         const repeatMessage = async() => {
-            let sentMessage = channel.messages.cache.first()
-            if(!sentMessage) return
+            let sentMessage = (await channel.messages.fetch()).first()
+            if(!sentMessage) {
+                sentMessage = await channel.send(message)
+                emojiID.forEach(emojiId => {
+                    sentMessage!.react(emojiId)
+                })
+                return
+            }
             if(sentMessage.content === message) {
                 if(sentMessage.author.id === client.user?.id) {
                     sentMessage.edit(message)
@@ -39,6 +44,6 @@ export default(client: SettClient) => {
                 sentMessage!.react(emojiId)
             })
         }
-        
+        await repeatMessage()
     })
 }

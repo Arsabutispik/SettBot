@@ -22,7 +22,7 @@ export default async(_client: SettClient, reaction: MessageReaction, user: User)
 
     const message = "Seçilebilecek rol listesi:"
     if(!reaction.message.content?.startsWith(message)) return
-    if(!Object.prototype.hasOwnProperty.call(allRoles, reaction.emoji.id)) return reaction.users.remove()
+    if(!Object.prototype.hasOwnProperty.call(allRoles, reaction.emoji.id)) return reaction.users.remove(user.id)
 
     const role = reaction.message.guild!.roles.cache.get(allRoles[reaction.emoji.id!])
 
@@ -33,5 +33,5 @@ export default async(_client: SettClient, reaction: MessageReaction, user: User)
     } else {
         member.roles.add(role)
     }
-    reaction.remove()
+    reaction.users.remove(user.id)
 }
