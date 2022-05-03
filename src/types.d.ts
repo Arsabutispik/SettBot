@@ -1,4 +1,4 @@
-import { ApplicationCommandData, ApplicationCommandType, Client, Collection, Interaction, Message, Snowflake } from "discord.js";
+import { Client, Collection, Message, Snowflake } from "discord.js";
 import { Model } from 'mongoose'
 
 export type ExecuteParameters = {

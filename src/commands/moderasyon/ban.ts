@@ -92,6 +92,7 @@ export default {
                 message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
             }
             user.ban({reason, days: 7})
+            // noinspection JSPotentiallyInvalidConstructorUsage
             await new punishment({userId: user.id, staffId: message.author.id, reason, expires: new Date(Date.now() + duration), type: "ban"}).save()
             modlog(message.guild!, user.user, "SÜRELİ_BAN", message.author, reason, duration)
         } else {

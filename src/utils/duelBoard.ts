@@ -31,7 +31,7 @@ const updateLeaderboard = async (client: SettClient) => {
                 repeatMessage()
             }
         } else {
-            sentMessage = await channel.send(top)
+            await channel.send(top)
         }
     }
     await repeatMessage()
