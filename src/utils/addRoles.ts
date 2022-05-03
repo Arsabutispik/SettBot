@@ -8,19 +8,11 @@ interface rolesType {
 const roles = emojiRoles as rolesType
 
 export default(client: SettClient) => {
-    let message = "Seçilebilecek rol listesi:"
     Object.keys(roles).forEach(async channelId => {
+        let message = "Seçilebilecek rol listesi:"
         const channel = client.channels.cache.get(channelId) as TextChannel
         if(!channel) return
         let emojiID: string[] = []
-        Object.keys(roles[channelId]).forEach(emojiId => {
-            emojiID.push(emojiId)
-            const emoji = channel.guild.emojis.cache.get(emojiId)
-            const role = channel.guild.roles.cache.get(roles[channelId][emojiId])
-            if(!role) return
-            if(!emoji) return
-            message += `\n${emoji}: \`${role.name}\``
-        })
         const repeatMessage = async() => {
             let sentMessage = (await channel.messages.fetch()).first()
             if(!sentMessage) {
@@ -32,18 +24,27 @@ export default(client: SettClient) => {
             }
             if(sentMessage.content === message) {
                 if(sentMessage.author.id === client.user?.id) {
-                    sentMessage.edit(message)
+                    if(sentMessage.content === message) return
+                    await sentMessage.edit(message)
                 } else {
-                    sentMessage.delete()
-                    repeatMessage()
+                    await sentMessage.delete()
+                    await repeatMessage()
                 }
             } else {
                 sentMessage = await channel.send(message)
             }
-            emojiID.forEach(emojiId => {
-                sentMessage!.react(emojiId)
-            })
+            for (const emojiId of emojiID) {
+                await sentMessage!.react(emojiId)
+            }
         }
+        Object.keys(roles[channelId]).forEach(emojiId => {
+            emojiID.push(emojiId)
+            const emoji = client.emojis.cache.get(emojiId) || emojiId
+            const role = channel.guild.roles.cache.get(roles[channelId][emojiId])
+            if(!role) return
+            message += `\n${emoji}: \`${role.name}\``
+        })
         await repeatMessage()
+
     })
 }
