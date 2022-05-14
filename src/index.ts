@@ -7,8 +7,9 @@ import { SettClient } from './types';
 import { registerCommands, registerEvents } from './utils/registery.js';
 import { log } from './utils/utils.js';
 import checkPunishments from './utils/checkPunishments.js';
+import duelBoard from './utils/duelBoard.js';
 
-const settBot = new Client({intents: 32767}) as SettClient
+const settBot = new Client({intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION']}) as SettClient
 
 (async () => {
     //Koleksiyonları bota tanıt
@@ -42,5 +43,6 @@ const settBot = new Client({intents: 32767}) as SettClient
         log("ERROR", "src/index.ts", `Bağlanırken Hata: ${e.message}`);
     }
     await checkPunishments(settBot)
+    duelBoard(settBot)
     log("SUCCESS","src/index.ts","Bütün komutlar, kategoriler, olaylar ve koleksiyonlar bota tanıtıldı. Veri tabanı bağlandı");
 })();

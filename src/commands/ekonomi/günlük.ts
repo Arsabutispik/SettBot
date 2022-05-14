@@ -14,7 +14,7 @@ export default {
         if(userInfo!.daily > new Date()){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
-            .setDescription(`Bir sonra ki saatlik paranı \`${msToTime(userInfo!.daily.getTime() - new Date().getTime())}\` sonra alabilirsin`)
+            .setDescription(`Bir sonra ki günlük paranı \`${msToTime(userInfo!.daily.getTime() - new Date().getTime())}\` sonra alabilirsin`)
             .setColor("RED")
             .setTimestamp(new Date(userInfo!.daily.getTime()))
             message.channel.send({embeds: [embed]})

@@ -1,6 +1,7 @@
 import { SettClient } from "../types";
 import modlog from "./modlog.js";
 import punishmentSchema from "../schemas/punishmentSchema.js";
+import config from "../config.json" assert {type: 'json'};
 
 export default async(client: SettClient) => {
     const check = async() => {
@@ -21,7 +22,7 @@ export default async(client: SettClient) => {
                 if(!member){
                     continue
                 }
-                member.roles.remove("rol id")
+                member.roles.remove(config.MUTE_ROLE)
             }
 
         }

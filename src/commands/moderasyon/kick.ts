@@ -37,7 +37,7 @@ export default {
                 message.channel.send({embeds: [embed]})
                 return
             }
-            if(user.roles.highest >= message.member!.roles.highest){
+            if(user.roles.highest.position >= message.member!.roles.highest.position){
                 const embed = new MessageEmbed()
                 .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setColor("RED")
@@ -45,7 +45,7 @@ export default {
                 message.channel.send({embeds: [embed]})
                 return
             }
-            if(user.roles.highest >= message.guild!.me!.roles.highest){
+            if(user.roles.highest.position >= message.guild!.me!.roles.highest.position){
                 const embed = new MessageEmbed()
                 .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setColor("RED")
@@ -86,7 +86,7 @@ export default {
                 await user.send(`NeonPrice sunucusundan atıldınız. Sebep: ${reason}`)
                 message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** atıldı (Olay #${cases.case}) Kullanıcı özel bir mesaj ile bildirildi`)
             } catch {
-                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
+                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** atıldı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
             }
             modlog(message.guild!, user.user, "AT", message.author, args.slice(2).join(" "))
             await user.ban({days: 7, reason})
@@ -166,7 +166,7 @@ export default {
                 await user.send(`NeonPrice sunucusundan atıldınız. Sebep: ${reason}`)
                 message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** atıldı (Olay #${cases.case}) Kullanıcı özel bir mesaj ile bildirildi`)
             } catch {
-                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
+                message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** atıldı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
             }
             modlog(message.guild!, user.user, "AT", message.author, reason)
             user.kick(reason)

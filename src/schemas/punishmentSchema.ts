@@ -14,7 +14,7 @@ const schema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ["ban", "mute"]
+        enum: ["ban", "mute", "uyarı"]
     }
 }, {
     timestamps: true

@@ -4,6 +4,7 @@ import { commandBase } from "../../types";
 import modlog from "../../utils/modlog.js";
 import caseSchema from "../../schemas/caseSchema.js";
 import punishment from "../../schemas/punishmentSchema.js";
+import config from "../../config.json" assert {type: 'json'};
 
 export default {
     name: "mute",
@@ -37,7 +38,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        if(targetMember.roles.highest >= message.member!.roles.highest){
+        if(targetMember.roles.highest.position >= message.member!.roles.highest.position){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
@@ -45,7 +46,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        if(targetMember.roles.highest >= message.guild!.me!.roles.highest){
+        if(targetMember.roles.highest.position >= message.guild!.me!.roles.highest.position){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
@@ -92,13 +93,14 @@ export default {
             cases = await caseSchema.findOneAndUpdate({_id: message.guild!.id}, {}, {setDefaultsOnInsert: true})
         }
         const longduration = ms(duration, {long: true}).replace(/seconds|second/, "saniye").replace(/minutes|minute/, "dakika").replace(/hours|hour/, "saat").replace(/days|day/, "gün")
-        const embed = new MessageEmbed()
-        .setColor("DARK_GREEN")
-        .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
-        .setDescription(`**${targetMember.user.tag}**, ${longduration} boyunca susturuldu (Olay #${cases.case})`)
-        .setTimestamp(new Date(new Date().getTime() + duration))
-        message.channel.send({embeds: [embed]})
+        try {
+            await targetMember.send(`NeonPrice sunucusunda ${longduration} boyunca susturuldunuz. Sebep: ${reason}`)
+            message.channel.send(`<:checkmark:962444136366112788> **${targetMember.user.tag}** ${longduration} boyunca susturuldu (Olay #${cases.case}) Kullanıcı özel bir mesaj ile bildirildi`)
+        } catch {
+            message.channel.send(`<:checkmark:962444136366112788> **${targetMember.user.tag}** ${longduration} boyunca susturuldu (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
+        }
         await new punishment({userId: targetMember.id, staffId: message.author.id, reason, expires: new Date(Date.now() + duration), type: "mute"}).save()
         modlog(message.guild!, targetMember.user, "SUSTUR", message.author, reason, duration)
+        await targetMember.roles.add(config.MUTE_ROLE)
     }
 } as commandBase

@@ -7,7 +7,7 @@ import allowedChannels from '../allowedURIChannels.json' assert {type: 'json'};
 import config from '../config.json' assert {type: 'json'}
 import createMail from "../utils/createMail.js";
 //Bir kaç regex
-const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z\d+&@#\/%?=~_|!:,.;]*[-A-Z\d+&@#\/%=~_|])/ig
 
 const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -126,22 +126,21 @@ export default async (client: SettClient, message: Discord.Message) => {
             }
             //Bütün linklerin üzerinden geçen bir 'for' döngüsü
             
-            for(const urls of urlRegex.exec(escapeRegex(message.content))!.input.split(/  | /ig)){
+            for(const urls of urlRegex.exec(escapeRegex(message.content))!.input.split(/ {2}| /ig)){
                 //Bunu sıfırlamazsak bot bozulur
                 urlRegex.lastIndex = 0
                 //İzin verilen bir link varsa döngüye bir şey yapmadan devam et.
-                if(allowed.includes(urls)){
+                if (allowed.includes(urls)) {
                     continue
-                } else {
-                    //İzin verilen link yoksa mesajı sil ve uyarı mesajı at.
-                    const embed = new MessageEmbed()
+                }
+                //İzin verilen link yoksa mesajı sil ve uyarı mesajı at.
+                const embed = new MessageEmbed()
                     .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
                     .setDescription("Bu kanalda link paylaşmak yasaktır. Lütfen şu kanallarda link paylaşınız:")
-                    .addField("Link İzni Verilen Kanallar", allowedChannels.length > 0 ? allowedChannels.map(m => `<#${m}>`).join(', '): "Hiç.")
+                    .addField("Link İzni Verilen Kanallar", allowedChannels.length > 0 ? allowedChannels.map(m => `<#${m}>`).join(', ') : "Hiç.")
                     .setColor("DARK_RED")
-                    message.channel.send({embeds: [embed]})
-                    message.delete()
-                }
+                message.channel.send({embeds: [embed]})
+                message.delete()
             }
         }
         //Bir regex ve prefix kontrolü
