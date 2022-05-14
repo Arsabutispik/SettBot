@@ -3,5 +3,6 @@
     "MONGODB_URI": "URI",
     "PREFIX": "prefix",
     "MOD_LOG": "id",
-    "MOD_MAIL": "id"
+    "MOD_MAIL": "id",
+    "MUTE_ROLE": "id"
 }
