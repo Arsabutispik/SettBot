@@ -8,7 +8,7 @@ interface rolesType {
 const roles = emojiRoles as rolesType
 
 export default async(_client: SettClient, reaction: MessageReaction, user: User) => {
-    console.log(reaction.emoji.id)
+    if(reaction.message.partial) await reaction.message.fetch()
     if(reaction.message.channel.type !== "GUILD_TEXT") return
     if(user.bot) return
     if(!reaction.message.guild!.me!.permissions.has("MANAGE_ROLES")) return
@@ -18,8 +18,6 @@ export default async(_client: SettClient, reaction: MessageReaction, user: User)
     if(!Object.prototype.hasOwnProperty.call(roles, reaction.message.channel.id)) return
 
     const allRoles = roles[reaction.message.channel.id]
-
-    if(reaction.message.partial) await reaction.message.fetch()
 
     const message = "Seçilebilecek rol listesi:"
     if(!reaction.message.content?.startsWith(message)) return

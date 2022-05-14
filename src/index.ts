@@ -9,7 +9,7 @@ import { log } from './utils/utils.js';
 import checkPunishments from './utils/checkPunishments.js';
 import duelBoard from './utils/duelBoard.js';
 
-const settBot = new Client({intents: 32767}) as SettClient
+const settBot = new Client({intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION']}) as SettClient
 
 (async () => {
     //Koleksiyonları bota tanıt
