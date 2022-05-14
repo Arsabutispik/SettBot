@@ -1,7 +1,7 @@
 import { SettClient } from "../types";
 import modlog from "./modlog.js";
 import punishmentSchema from "../schemas/punishmentSchema.js";
-import config from "../config.json";
+import config from "../config.json" assert {type: 'json'};
 
 export default async(client: SettClient) => {
     const check = async() => {

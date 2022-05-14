@@ -1,9 +1,9 @@
 import { commandBase } from '../../types'
-import config from '../../config.json'
+import config from '../../config.json' assert {type: 'json'};
 import punishment from "../../schemas/punishmentSchema.js";
 import {Message, MessageEmbed} from "discord.js";
-import caseSchema from "../../schemas/caseSchema";
-import modlog from "../../utils/modlog";
+import caseSchema from "../../schemas/caseSchema.js";
+import modlog from "../../utils/modlog.js";
 import ms from "ms";
 
 export default {
@@ -37,7 +37,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        if(member.roles.highest >= message.member!.roles.highest){
+        if(member.roles.highest.position >= message.member!.roles.highest.position){
             const embed = new MessageEmbed()
                 .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setColor("RED")
@@ -45,7 +45,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        if(member.roles.highest >= message.guild!.me!.roles.highest){
+        if(member.roles.highest.position >= message.guild!.me!.roles.highest.position){
             const embed = new MessageEmbed()
                 .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setColor("RED")
@@ -120,7 +120,7 @@ export default {
                 message.channel.send(`<:checkmark:962444136366112788> **${member.user.tag}** ${longduration} boyunca yasaklandı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
             }
             await new punishment({userId: member.id, staffId: message.author.id, reason: "Otomatik Ceza Artışı (4. Uyarı)", expires: new Date(Date.now() + ms("1d")), type: "ban"}).save()
-            modlog(message.guild!, member.user, "SÜRELİ_BAN", message.author, reason, ms("10m"))
+            modlog(message.guild!, member.user, "SÜRELİ_BAN", message.author, reason, ms("1d"))
             await member.ban({reason: "Otomatik Ceza Artışı (4. Uyarı)", days: 7})
         } else if(sizeOf === 5) {
             try {

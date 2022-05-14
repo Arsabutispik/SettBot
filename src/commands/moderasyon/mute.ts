@@ -4,7 +4,7 @@ import { commandBase } from "../../types";
 import modlog from "../../utils/modlog.js";
 import caseSchema from "../../schemas/caseSchema.js";
 import punishment from "../../schemas/punishmentSchema.js";
-import config from "../../config.json";
+import config from "../../config.json" assert {type: 'json'};
 
 export default {
     name: "mute",
@@ -38,7 +38,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        if(targetMember.roles.highest >= message.member!.roles.highest){
+        if(targetMember.roles.highest.position >= message.member!.roles.highest.position){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
@@ -46,7 +46,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        if(targetMember.roles.highest >= message.guild!.me!.roles.highest){
+        if(targetMember.roles.highest.position >= message.guild!.me!.roles.highest.position){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")

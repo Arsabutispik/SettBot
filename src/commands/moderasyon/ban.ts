@@ -37,7 +37,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        if(user.roles.highest >= message.member!.roles.highest){
+        if(user.roles.highest.position >= message.member!.roles.highest.position){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
@@ -45,7 +45,7 @@ export default {
             message.channel.send({embeds: [embed]})
             return
         }
-        if(user.roles.highest >= message.guild!.me!.roles.highest){
+        if(user.roles.highest.position >= message.guild!.me!.roles.highest.position){
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
