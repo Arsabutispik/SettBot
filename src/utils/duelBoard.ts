@@ -7,6 +7,7 @@ const fetchTopMembers = async() => {
     const results = await userSchema.find({}).sort({win: -1}).limit(10)
     for(let counter = 0; counter < results.length; counter++) {
         const result = results[counter]
+        if(result.win === 0) continue
         text += `#${counter + 1}. <@${result._id}> şu ana kadar **${result.win}** düello kazamış!\n\n`
     }
     text += "Bu mesaj her 10 dakikada bir yenilenecektir."
@@ -14,12 +15,12 @@ const fetchTopMembers = async() => {
 }
 
 const updateLeaderboard = async (client: SettClient) => {
-    const channel = client.channels.cache.get("970603107849478145") as TextChannel
+    const channel = client.channels.cache.get("868077575954661377") as TextChannel
     if(!channel) return
     const top = await fetchTopMembers()
     const repeatMessage = async() => {
         let sentMessage = (await channel.messages.fetch()).first()
-        
+
         if(!sentMessage) {
             sentMessage = await channel.send(top)
         }
