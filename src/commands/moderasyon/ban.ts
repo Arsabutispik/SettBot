@@ -25,7 +25,7 @@ export default {
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
-            .setDescription("Kendini banlayamazsın!")
+            .setDescription("Kendini yasaklayamazsın!")
             message.channel.send({embeds: [embed]})
             return
         }
@@ -33,7 +33,7 @@ export default {
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
-            .setDescription("Bir botu banlayamazsın!")
+            .setDescription("Bir botu yasaklayamazsın!")
             message.channel.send({embeds: [embed]})
             return
         }
@@ -41,7 +41,7 @@ export default {
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
-            .setDescription("Bu kullanıcının rolü senden yüksek (veya aynı) bu kişiyi banlayamazsın!")
+            .setDescription("Bu kullanıcının rolü senden yüksek (veya aynı) bu kişiyi yasaklayamazsın!")
             message.channel.send({embeds: [embed]})
             return
         }
@@ -49,7 +49,7 @@ export default {
             const embed = new MessageEmbed()
             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({dynamic: true})})
             .setColor("RED")
-            .setDescription("Bu kullanıcının rolü benden yüksek (veya aynı) o yüzden bu kişiyi banlayamam!")
+            .setDescription("Bu kullanıcının rolü benden yüksek (veya aynı) o yüzden bu kişiyi yasaklayamam!")
             message.channel.send({embeds: [embed]})
             return
         }
@@ -77,7 +77,7 @@ export default {
                     reason = msg.first()!.content
                 } catch {
                     msg.delete()
-                    message.channel.send("Bir sebep verilmedi ban komutu geçersiz kılındı").then(m => {
+                    message.channel.send("Bir sebep verilmedi yasaklama komutu geçersiz kılındı").then(m => {
                         setTimeout(() => {
                             m.delete()
                         }, 1000 * 20)
@@ -86,7 +86,7 @@ export default {
                 }
             }
             try{
-                await user.send(`Neon price sunucusundan **${longduration}** boyunca banlandın. Sebep: ${args.slice(1).join(" ")}`)
+                await user.send(`NeonPrice sunucusunda **${longduration}** boyunca yasaklama. Sebep: ${args.slice(1).join(" ")}`)
                 message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcı özel bir mesaj ile bildirildi`)
             } catch {
                 message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
@@ -105,7 +105,7 @@ export default {
                      reason = msg.first()!.content
                  } catch {
                      msg.delete()
-                     message.channel.send("Bir sebep verilmedi ban komutu geçersiz kılındı").then(m => {
+                     message.channel.send("Bir sebep verilmedi yasaklama komutu geçersiz kılındı").then(m => {
                          setTimeout(() => {
                              m.delete()
                          }, 1000 * 20)
@@ -114,7 +114,7 @@ export default {
                  }
              }
             try{
-                await user.send(`Neon price sunucusundan süresiz banlandın. Sebep: ${reason}`)
+                await user.send(`NeonPrice sunucusundan süresiz yasaklandın. Sebep: ${reason}`)
                 message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcı özel bir mesaj ile bildirildi`)
             } catch {
                 message.channel.send(`<:checkmark:962444136366112788> **${user.user.tag}** yasaklandı (Olay #${cases.case}) Kullanıcıya özel mesaj atılamadı`)
